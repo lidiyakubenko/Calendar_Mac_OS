@@ -33,7 +33,6 @@ border-collapse: collapse;
 export const Main = styled.div`
 margin: auto; 
 width: 705px;
-height:2000px;
 padding-top:65px;
 border-collapse: collapse;
 box-shadow:0 0 1px rgba(0,0,0,.4);
