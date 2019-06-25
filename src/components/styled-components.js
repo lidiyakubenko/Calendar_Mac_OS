@@ -34,15 +34,25 @@ export const Main = styled.div`
 margin: auto; 
 width: 705px;
 height:2000px;
+padding-top:65px;
 border-collapse: collapse;
 box-shadow:0 0 1px rgba(0,0,0,.4);
 `
 
 export const Header = styled.div`
+position:fixed;
+background-color:rgb(255,255,255);
+border: .5px solid rgba(0,0,0,.2);
+top:0;
+width:705px;
+z-index:10;
+`
+
+export const YearAndButtons = styled.div`
 display: flex; 
 justify-content: space-between;
 align-items:center;
-padding: 10px 15px 5px 15px;
+padding:5px 10px;
 `
 
 
@@ -61,8 +71,7 @@ color:grey;
 
 export const Th = styled.td`
 position:relative;
-padding-top:30px;
-box-shadow:0 1px rgba(0,0,0,.1);
+padding:13px 49px;
 `
 
 export const Number = styled.div`
