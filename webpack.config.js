@@ -31,7 +31,11 @@ config = {
             title: 'Calendar Mac OS',
             template: './index.html',
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new webpack.ContextReplacementPlugin(
+            /moment[/\\]locale$/,
+            /ru/
+        )
     ]
 }
 
