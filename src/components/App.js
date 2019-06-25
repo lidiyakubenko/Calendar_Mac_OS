@@ -1,10 +1,25 @@
 import React, {Component} from 'react'
-import {DayOfTheWeek, Table, Td,Th, Number, TodayNumber} from './styled-components'
+import {Year,Month,Header,ArrowButton, Main, Button, DayOfTheWeek, Table, Td, Th, Number, TodayNumber, DayOffCell} from './styled-components'
+import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left'
+import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right'
 
 class App extends Component {
     render() {
         return (
-            <div style={{margin:'auto',width:760}}>
+            <Main>
+                <Header>
+                    <div style={{display:'flex',alignItems:'flex-end'}}> <Month>апрель </Month> <Year> 2019</Year> <Month>г.</Month> </div>
+                    <div style={{display:'flex'}}>
+                        <ArrowButton>
+                            <MdKeyboardArrowLeft/>
+                        </ArrowButton>
+                        <Button>Сегодня</Button>
+                        <ArrowButton>
+                           <MdKeyboardArrowRight/>
+                        </ArrowButton>
+
+                    </div>
+                </Header>
                 <Table>
                     <tbody>
                     <tr>
@@ -17,17 +32,41 @@ class App extends Component {
                         <Th>
                             <DayOfTheWeek>ср</DayOfTheWeek>
                         </Th>
+                        <Th>
+                            <DayOfTheWeek>чт</DayOfTheWeek>
+                        </Th>
+                        <Th>
+                            <DayOfTheWeek>пт</DayOfTheWeek>
+                        </Th>
+                        <Th style={{color:'grey'}}>
+                            <DayOfTheWeek>сб</DayOfTheWeek>
+                        </Th>
+                        <Th style={{color:'grey'}}>
+                            <DayOfTheWeek>вс</DayOfTheWeek>
+                        </Th>
                     </tr>
                     <tr>
                         <Td>
-                         <TodayNumber number={5}>5</TodayNumber>
+                            <Number number={5}>1 апр.</Number>
                         </Td>
                         <Td>
+                            <Number>2</Number>
+                        </Td>
+                        <Td>
+                            <Number>3</Number>
+                        </Td>
+                        <Td>
+                            <Number>4</Number>
+                        </Td>
+                        <Td>
+                            <Number>5</Number>
+                        </Td>
+                        <DayOffCell>
                             <Number>6</Number>
-                        </Td>
-                        <Td>
+                        </DayOffCell>
+                        <DayOffCell>
                             <Number>7</Number>
-                        </Td>
+                        </DayOffCell>
                     </tr>
                     <tr>
                         <Td>
@@ -43,7 +82,7 @@ class App extends Component {
 
                     </tbody>
                 </Table>
-            </div>
+            </Main>
         )
     }
 }
