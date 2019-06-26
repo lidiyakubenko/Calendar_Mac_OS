@@ -7,8 +7,10 @@ import Buttons from './Buttons'
 import CurrentDate from './CurrentDate'
 import _ from 'lodash'
 
+const headerHeight = 76
+
 const scrollToRef = ref => {
-    window.scrollTo(0, ref.current.offsetTop)
+    window.scrollTo(0, ref.current.offsetTop - headerHeight)
 }
 
 @observer
@@ -16,24 +18,39 @@ class App extends Component {
 
     constructor(props) {
         super(props)
-        this.myRef = React.createRef()
+        this.state = {
+            isFocus: false,
+        }
+        this.currentMonth = React.createRef()
         this.handleScroll = _.debounce(this.handleScroll.bind(this), 100)
     }
 
 
     executeScroll = ref => scrollToRef(ref)
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.store.addDays()
+    }
+
+    componentDidMount() {
         window.addEventListener('scroll', this.handleScroll)
+        this.executeScroll(this.currentMonth)
     }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll)
     }
 
-    handleScroll(e){
-        console.log(e)
+    handleScroll(e) {
+        const monthHeight = this.currentMonth.current.offsetTop - headerHeight
+        const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
+        if (docHeight > monthHeight - 100  && docHeight < monthHeight + 100) {
+            this.setState({isFocus: true})
+        }
+        else {
+            this.setState({isFocus: false})
+        }
+        console.log(docHeight)
     }
 
     render() {
@@ -45,7 +62,7 @@ class App extends Component {
                         <YearAndButtons>
                             <CurrentDate/>
                             <Buttons
-                                myRef={this.myRef}
+                                myRef={this.currentMonth}
                                 executeScroll={this.executeScroll}
                             />
                         </YearAndButtons>
@@ -56,7 +73,15 @@ class App extends Component {
                     <Table>
                         <tbody>
                         {
-                            store.formattedDays.map((week, i) => (<Week key={i} week={week} myRef={this.myRef}/>))
+                            store.formattedDays.map((week, i) => (
+                                <Week
+                                    key={i}
+                                    week={week}
+                                    currentMonth={this.currentMonth}
+                                    today={store.today}
+                                isFocus={this.state.isFocus}
+                                />
+                            ))
                         }
                         </tbody>
                     </Table>

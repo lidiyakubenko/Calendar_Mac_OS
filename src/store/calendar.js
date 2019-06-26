@@ -29,7 +29,6 @@ class Calendar {
     }
 
     @computed get formattedDays() {
-        console.log(this.days)
         return this.days.reduce((accum, value, index) =>
                 index === 0 ? this.addDayFirstWeek(accum,value) :
                     value.includes('numberDay:1') ? this.addDayNextWeek(accum,value) :
@@ -48,7 +47,7 @@ class Calendar {
         if (dayOfWeek !== 1) {
             let day = dayOfWeek === 0 ? 7 : dayOfWeek
             for (let j = 1; j < day; ++j) {
-                const lastDay = moment(firstDayOfTheYear, requiredFormat).add(-j, 'days').format(requiredFormat)
+                const lastDay = moment(firstDayOfTheYear, requiredFormat).subtract(j, 'days').format(requiredFormat)
                 runInAction(() => {
                      this.days.unshift(`${lastDay} numberDay:${getNumberDayOfWeek(lastDay)}`)
                 })

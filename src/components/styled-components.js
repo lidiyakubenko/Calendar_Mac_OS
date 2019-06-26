@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled,{ keyframes } from 'styled-components'
 
 
 export const CommonForButton = styled.button`
@@ -73,11 +73,36 @@ position:relative;
 padding:13px 49px;
 `
 
+const makeDisabled = keyframes`
+  from {
+    color:black;
+  }
+
+  to {
+     color:#DCDCDC;
+  }
+`;
+
+const makeEnabled = keyframes`
+  from {
+    color:#DCDCDC;
+  }
+
+  to {
+     color:black;
+  }
+`;
+
 export const Number = styled.div`
 position:absolute;
 top:5px;
 right:9px;
 font-family:sans-serif;
+ animation: ${makeEnabled} .5s forwards;
+`
+
+export const NotCurrNumber = styled(Number)`
+ animation: ${makeDisabled} .5s forwards;
 `
 export const Month = styled.div`
 font-family:Roboto,sans-serif;
