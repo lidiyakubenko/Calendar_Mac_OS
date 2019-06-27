@@ -7,34 +7,24 @@ import Buttons from './Buttons'
 import CurrentDate from './CurrentDate'
 import _ from 'lodash'
 
-const headerHeight = 76
-
-const scrollToRef = ref => {
-    window.scrollTo(0, ref.current.offsetTop - headerHeight)
-}
 
 @observer
 class App extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            isFocus: false,
-        }
-        this.currentMonth = React.createRef()
-        this.handleScroll = _.debounce(this.handleScroll.bind(this), 100)
+        this.myRef = React.createRef()
+        this.handleScroll = _.debounce(this.handleScroll.bind(this), 300)
     }
 
-
-    executeScroll = ref => scrollToRef(ref)
 
     componentWillMount() {
         this.props.store.addDays()
     }
 
     componentDidMount() {
+        this.props.store.addMonthsControl(this.myRef)
         window.addEventListener('scroll', this.handleScroll)
-        this.executeScroll(this.currentMonth)
     }
 
     componentWillUnmount() {
@@ -42,44 +32,32 @@ class App extends Component {
     }
 
     handleScroll(e) {
-        const monthHeight = this.currentMonth.current.offsetTop - headerHeight
-        const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
-        if (docHeight > monthHeight - 100  && docHeight < monthHeight + 100) {
-            this.setState({isFocus: true})
-        }
-        else {
-            this.setState({isFocus: false})
-        }
-        console.log(docHeight)
+
     }
 
     render() {
         const {store} = this.props
         return (
             <Main>
+                <Header>
+                    <YearAndButtons>
+                        <CurrentDate/>
+                        <Buttons/>
+                    </YearAndButtons>
+                    <table>
+                        <DaysOfTheWeek/>
+                    </table>
+                </Header>
                 <div onScroll={this.handleScroll} id='scroll'>
-                    <Header>
-                        <YearAndButtons>
-                            <CurrentDate/>
-                            <Buttons
-                                myRef={this.currentMonth}
-                                executeScroll={this.executeScroll}
-                            />
-                        </YearAndButtons>
-                        <table>
-                            <DaysOfTheWeek/>
-                        </table>
-                    </Header>
                     <Table>
-                        <tbody>
+                        <tbody ref={this.myRef}>
                         {
                             store.formattedDays.map((week, i) => (
                                 <Week
                                     key={i}
                                     week={week}
-                                    currentMonth={this.currentMonth}
+                                    store={store}
                                     today={store.today}
-                                isFocus={this.state.isFocus}
                                 />
                             ))
                         }
