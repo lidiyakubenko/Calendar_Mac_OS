@@ -36,6 +36,14 @@ class Calendar {
         return week
     }
 
+    isWeekend = day => {
+        return day.includes('numberDay:6') || day.includes('numberDay:0')
+    }
+
+    getOnlyDay = day => {
+        return moment(day, 'MMMM Do YYYY dddd').format('DD')
+    }
+
     removeNumberDay = day => {
         const index = day.indexOf(' numberDay')
         return day.substring(0, index)
@@ -50,9 +58,6 @@ class Calendar {
         return moment(day, 'MMMM Do YYYY dddd').format('MMMM YYYY')
     }
 
-    isCurrMonth = day => {
-        return this.getMonthAndYear(this.removeNumberDay(day)) === this.today.monthAndYear
-    }
 
     scrollToCurrMonth = () => {
         const currMonthHeight = this.monthsControl[this.today.monthAndYear].height
