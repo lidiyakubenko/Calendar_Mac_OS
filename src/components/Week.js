@@ -22,25 +22,25 @@ class Week extends Component {
 
     render() {
         const {week, today} = this.props
-        const {isCurrMonth} = this.props.store
+        const {isFocusAtMonth} = this.props.store
         return (
             <tr>
-                {week.map((day, i) => {
+                {week.map(day => {
                     return this.isWeekend(day) ?
-                        <DayOffCell id={day} key={i}>
-                            {isCurrMonth(day) ?
+                        <DayOffCell id={day} key={day}>
+                            {isFocusAtMonth(day) ?
                                 <Number>{this.getOnlyDay(day)}</Number> :
                                 <NotCurrNumber>{this.getOnlyDay(day)}</NotCurrNumber>
                             }
 
                         </DayOffCell> :
                         this.removeNumberDay(day) === today ?
-                            <Td id={day} key={i}>
+                            <Td id={day} key={day}>
                                 <TodayNumber number={this.getOnlyDay(day)}>{this.getOnlyDay(day)}</TodayNumber>
                             </Td>
                             :
-                            <Td id={day} key={i}>
-                                {isCurrMonth(day) ?
+                            <Td id={day} key={day}>
+                                {isFocusAtMonth(day) ?
                                     <Number>{this.getOnlyDay(day)}</Number> :
                                     <NotCurrNumber>{this.getOnlyDay(day)}</NotCurrNumber>
                                 }
