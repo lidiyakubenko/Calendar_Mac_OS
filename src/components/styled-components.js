@@ -98,7 +98,7 @@ position:absolute;
 top:5px;
 right:9px;
 font-family:sans-serif;
- animation: ${makeEnabled} .5s forwards;
+ animation: ${makeEnabled} 1s forwards;
 `
 
 export const NotCurrNumber = styled(Number)`

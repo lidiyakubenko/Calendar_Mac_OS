@@ -9,11 +9,17 @@ import {observer} from 'mobx-react'
 @observer
 class Head extends Component {
     render() {
-        
+        const {monthsControl} = this.props
+        const months = Object.keys(monthsControl)
         return (
             <Header>
                 <YearAndButtons>
-                    <CurrentDate/>
+                    {months.map((month,i)=>(
+                        monthsControl[month].isFocus ?
+                            <CurrentDate key={i} date={month}/>
+                            :
+                            null
+                    ))}
                     <Buttons/>
                 </YearAndButtons>
                 <table>

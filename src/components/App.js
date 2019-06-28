@@ -5,6 +5,7 @@ import Week from './Week'
 import Head from './Head'
 import _ from 'lodash'
 
+
 @inject('store')
 @observer
 class App extends Component {
@@ -12,7 +13,7 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.myRef = React.createRef()
-        this.handleScroll = _.debounce(this.handleScroll.bind(this), 300)
+        this.handleScroll = _.debounce(this.handleScroll.bind(this), 100)
     }
 
     componentWillMount() {
@@ -33,16 +34,16 @@ class App extends Component {
         //add new days
         //add months control
         // change focus month
-        this.props.store.addNewDays()
-        this.props.store.addMonthsControl(this.myRef)
+        const addMonthsControl =  this.props.store.addMonthsControl(this.myRef)
+        this.props.store.addNewDays(addMonthsControl)
         this.props.store.changeFocusMonth()
     }
 
     render() {
-        const {store,monthControl} = this.props
+        const {store} = this.props
         return (
             <Main>
-               <Head monthControl={monthControl}/>
+               <Head monthsControl={store.monthsControl}/>
                 <div onScroll={this.handleScroll} id='scroll'>
                     <Table>
                         <tbody ref={this.myRef}>

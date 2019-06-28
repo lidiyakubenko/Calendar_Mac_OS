@@ -44,6 +44,7 @@ class Calendar {
         return moment(day, 'MMMM Do YYYY dddd').format('DD')
     }
 
+
     removeNumberDay = day => {
         const index = day.indexOf(' numberDay')
         return day.substring(0, index)
@@ -155,16 +156,18 @@ class Calendar {
         })
     }
 
-    addNewDays = () => {
+    addNewDays = addMonthsControl => {
         const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
         const docBottom = Number(document.documentElement.offsetHeight.toFixed(0))
         const lastWeek = this.weeks.length - 1
         const lastDay = this.weeks[lastWeek].length - 1
         if (docHeight <= 200) {
             this.addLastDays(this.removeNumberDay(this.weeks[0][0]), 105)
+            addMonthsControl()
         }
         if (docHeight >= docBottom - 500) {
             this.addNextDays(this.removeNumberDay(this.weeks[lastWeek][lastDay]), 105)
+            addMonthsControl()
         }
     }
 
