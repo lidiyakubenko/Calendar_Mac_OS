@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import {Main, Table} from './styled-components'
-import {observer,inject} from 'mobx-react'
+import {observer, inject} from 'mobx-react'
 import Week from './Week'
 import Head from './Head'
 import _ from 'lodash'
-
 
 @inject('store')
 @observer
@@ -13,7 +12,7 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.myRef = React.createRef()
-        this.handleScroll = _.debounce(this.handleScroll.bind(this), 100)
+        this.handleScroll = this.handleScroll.bind(this)
     }
 
     componentWillMount() {
@@ -34,8 +33,7 @@ class App extends Component {
         //add new days
         //add months control
         // change focus month
-        const addMonthsControl =  this.props.store.addMonthsControl(this.myRef)
-        this.props.store.addNewDays(addMonthsControl)
+        this.props.store.addNewDays(this.myRef)
         this.props.store.changeFocusMonth()
     }
 
@@ -43,7 +41,7 @@ class App extends Component {
         const {store} = this.props
         return (
             <Main>
-               <Head monthsControl={store.monthsControl}/>
+                <Head monthsControl={store.monthsControl}/>
                 <div onScroll={this.handleScroll} id='scroll'>
                     <Table>
                         <tbody ref={this.myRef}>

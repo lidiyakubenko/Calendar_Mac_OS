@@ -32,7 +32,7 @@ border-collapse: collapse;
 
 export const Main = styled.div`
 margin: auto; 
-width: 705px;
+width: 700px;
 padding-top:65px;
 border-collapse: collapse;
 box-shadow:0 0 1px rgba(0,0,0,.4);
@@ -43,7 +43,7 @@ position:fixed;
 background-color:rgb(255,255,255);
 border: .5px solid rgba(0,0,0,.2);
 top:0;
-width:705px;
+width:700px;
 z-index:10;
 `
 
@@ -57,7 +57,8 @@ padding:5px 10px;
 
 export const Td = styled.td`
 border: 1px solid  #DCDCDC;
-padding:45px 50px;
+width:100px;
+height:90px;
 box-sizing:border-box;
 position:relative;
 font-size:.9em;
@@ -68,9 +69,45 @@ background:#F5F5F5;
 color:grey;
 `
 
+export const Holiday = styled.div`
+background-color: rgb(193, 232, 255);
+position:absolute;
+right:${props =>{
+    return `-${700 - props.numDay * 100}px`}
+};
+left:-1px;
+font-size:.9em;
+z-index:5;
+padding-right:10px;
+font-family:sans-serif;
+`
+
 export const Th = styled.td`
 position:relative;
 padding:13px 49px;
+`
+
+export const Month = styled.div`
+font-family:Roboto,sans-serif;
+font-weight:600;
+font-size:1.7em;
+margin-right:5px;
+`
+
+
+export const Year = styled(Month)`
+font-weight:100;
+font-size:1.9em;
+`
+
+export const DayOfTheWeek = styled.div`
+position:absolute;
+right:9px;
+bottom:5px;
+top:5px;
+font-size:.9em;
+font-family:Roboto,sans-serif;
+font-weight:bold;
 `
 
 const makeDisabled = keyframes`
@@ -93,6 +130,7 @@ const makeEnabled = keyframes`
   }
 `;
 
+
 export const Number = styled.div`
 position:absolute;
 top:5px;
@@ -104,19 +142,6 @@ font-family:sans-serif;
 export const NotCurrNumber = styled(Number)`
  animation: ${makeDisabled} .5s forwards;
 `
-export const Month = styled.div`
-font-family:Roboto,sans-serif;
-font-weight:600;
-font-size:1.7em;
-margin-right:5px;
-`
-
-
-export const Year = styled(Month)`
-font-weight:100;
-font-size:1.9em;
-`
-
 
 export const TodayNumber = styled.div`
 position:absolute;
@@ -129,12 +154,4 @@ color:white;
 border-radius:90px
 `
 
-export const DayOfTheWeek = styled.div`
-position:absolute;
-right:9px;
-bottom:5px;
-top:5px;
-font-size:.9em;
-font-family:Roboto,sans-serif;
-font-weight:bold;
-`
+

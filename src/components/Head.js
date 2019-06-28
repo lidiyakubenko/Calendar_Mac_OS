@@ -11,15 +11,15 @@ class Head extends Component {
     render() {
         const {monthsControl} = this.props
         const months = Object.keys(monthsControl)
+        const month = months.reduce((accum,month)=>
+           accum ? accum : monthsControl[month].isFocus ? month : false ,false)
         return (
             <Header>
                 <YearAndButtons>
-                    {months.map((month,i)=>(
-                        monthsControl[month].isFocus ?
-                            <CurrentDate key={i} date={month}/>
+                    {month ? <CurrentDate date={month}/>
                             :
-                            null
-                    ))}
+                        <CurrentDate date='январь 2019'/>
+                    }
                     <Buttons/>
                 </YearAndButtons>
                 <table>

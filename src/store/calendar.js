@@ -156,18 +156,19 @@ class Calendar {
         })
     }
 
-    addNewDays = addMonthsControl => {
+
+    addNewDays = ref => {
         const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
         const docBottom = Number(document.documentElement.offsetHeight.toFixed(0))
         const lastWeek = this.weeks.length - 1
         const lastDay = this.weeks[lastWeek].length - 1
-        if (docHeight <= 200) {
+        if (docHeight <= 500) {
             this.addLastDays(this.removeNumberDay(this.weeks[0][0]), 105)
-            addMonthsControl()
+            this.addMonthsControl(ref)
         }
-        if (docHeight >= docBottom - 500) {
+        if (docHeight >= docBottom - 1000) {
             this.addNextDays(this.removeNumberDay(this.weeks[lastWeek][lastDay]), 105)
-            addMonthsControl()
+            this.addMonthsControl(ref)
         }
     }
 
