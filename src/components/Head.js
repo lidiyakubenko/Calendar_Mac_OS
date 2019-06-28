@@ -3,9 +3,13 @@ import {Header, YearAndButtons} from './styled-components'
 import DaysOfTheWeek from './DaysOfTheWeek'
 import Buttons from './Buttons'
 import CurrentDate from './CurrentDate'
+import {observer} from 'mobx-react'
 
-class Header extends Component {
+
+@observer
+class Head extends Component {
     render() {
+        
         return (
             <Header>
                 <YearAndButtons>
@@ -20,6 +24,6 @@ class Header extends Component {
     }
 }
 
-Header.propTypes = {}
+Head.propTypes = {}
 
-export default Header
+export default Head

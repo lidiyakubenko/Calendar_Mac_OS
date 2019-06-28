@@ -6,7 +6,7 @@ import {addLastDay, addNextDay, getDateWithNumDayOfWeek} from './help-functions'
 configure({enforceActions: 'observed'})
 
 class Calendar {
-    @observable days = []
+    @observable weeks = []
     @observable today = {
         full: moment().format('MMMM Do YYYY dddd'),
         monthAndYear: moment().format('MMMM YYYY'),
@@ -72,57 +72,64 @@ class Calendar {
 
     getNumberDayOfWeek = day => moment(day, 'MMMM Do YYYY dddd').day()
 
+    @action
     addLastDays = (day, daysCount) => {
-        for (let i = 1; i < daysCount; ++i) {
+        let days = []
+        for (let i = 1; i <= daysCount; ++i) {
             const lastDay = addLastDay(day, i)
-            runInAction(() => {
-                this.days.unshift(getDateWithNumDayOfWeek(lastDay))
-            })
+            days.unshift(getDateWithNumDayOfWeek(lastDay))
         }
+        let lastWeeks = this.daysByWeeks(days)
+        runInAction(() => {
+            this.weeks = [...lastWeeks, ...this.weeks]
+        })
     }
 
     @action
     addNextDays = (day, daysCount) => {
-        for (let i = 0; i < daysCount; ++i) {
+        let days = []
+        for (let i = 1; i <= daysCount; ++i) {
             const nextDay = addNextDay(day, i)
-            runInAction(() => {
-                this.days = [...this.days, getDateWithNumDayOfWeek(nextDay)]
-            })
+            days = [...days, getDateWithNumDayOfWeek(nextDay)]
         }
+        let nextWeeks = this.daysByWeeks(days)
+        runInAction(() => {
+            this.weeks = [...this.weeks, ...nextWeeks]
+        })
     }
 
-
-    @computed get daysByWeeks() {
-        return this.days.reduce((accum, value, index) =>
+    daysByWeeks = days => {
+        return days.reduce((accum, value, index) =>
                 index === 0 ? this.addDayInFirstWeek(accum, value) :
                     value.includes('numberDay:1') ? this.addDayInNextWeek(accum, value) :
                         this.addDayInCurrentWeek(accum, value)
             , [])
-
     }
 
-    addDays = () => {
-        const requiredFormat = 'MMMM Do YYYY dddd'
-        const firstDayOfTheYear = moment(`${this.today.year}-01-01`).format(requiredFormat)
+    addFirstDays = () => {
+        const firstDayOfTheYear = moment(`${this.today.year}-01-01`).format('MMMM Do YYYY dddd')
         let dayOfWeek = this.getNumberDayOfWeek(firstDayOfTheYear)
         if (dayOfWeek !== 1) {
             dayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek
-            this.addLastDays(firstDayOfTheYear, dayOfWeek)
+            const lastDay = addLastDay(firstDayOfTheYear, dayOfWeek)
+            this.addNextDays(lastDay, 371)
         }
-        this.addNextDays(firstDayOfTheYear, 365)
     }
+
 
     @action
     addMonthsControl = refTable => {
         const rows = [...refTable.current.children]
         rows.forEach(row => [...row.children].forEach(cell => {
-            if (this.isFirstDayMonth(this.removeNumberDay(cell.id))) {
+            const isFirstDay = this.isFirstDayMonth(this.removeNumberDay(cell.id))
+            const month = this.monthsControl[(this.getMonthAndYear(cell.id))]
+            if (isFirstDay) {
                 runInAction(() => {
                     this.monthsControl = {
                         ...this.monthsControl,
                         [this.getMonthAndYear(cell.id)]: {
                             height: cell.offsetTop,
-                            isFocus: false
+                            isFocus: month ? month.isFocus : false
                         }
                     }
                 })
@@ -134,18 +141,32 @@ class Calendar {
     changeFocusMonth = () => {
         const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
         const months = Object.keys(this.monthsControl)
-        const margin = 180
+        months.sort((a, b) => {
+            return moment.utc(a,'MMMM YYYY').diff(moment.utc(b,'MMMM YYYY'))
+        })
         months.forEach((month, i) => {
             const currMonth = this.monthsControl[month]
-            const nextMonth = this.monthsControl[months[i + 1]]
-            const top = currMonth.height - this.headerHeight
-            const bottom = nextMonth ? nextMonth.height - this.headerHeight : top + 360
+            const lastMonth = this.monthsControl[months[i - 1]]
+            const bottom = currMonth.height
+            const top = lastMonth ? lastMonth.height : 0
             runInAction(() => {
-                currMonth.isFocus = docHeight >= top - margin && docHeight <= bottom - margin
+                this.monthsControl[month].isFocus = docHeight >= top && docHeight <= bottom
             })
         })
     }
 
+    addNewDays = () => {
+        const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
+        const docBottom = Number(document.documentElement.offsetHeight.toFixed(0))
+        const lastWeek = this.weeks.length - 1
+        const lastDay = this.weeks[lastWeek].length - 1
+        if (docHeight <= 200) {
+            this.addLastDays(this.removeNumberDay(this.weeks[0][0]), 105)
+        }
+        if (docHeight >= docBottom - 500) {
+            this.addNextDays(this.removeNumberDay(this.weeks[lastWeek][lastDay]), 105)
+        }
+    }
 
 }
 

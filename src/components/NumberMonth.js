@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import {NotCurrNumber, Number} from './styled-components'
+import {observer} from 'mobx-react'
 
+
+@observer
 class NumberMonth extends Component {
     render() {
         const {day,isFocus} = this.props
