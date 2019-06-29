@@ -14,3 +14,12 @@ export const addNextDay = (day,index) =>{
    return moment(day, 'MMMM Do YYYY dddd').add(index, 'days').format('MMMM Do YYYY dddd')
 }
 
+export const addLastMonth = (day,index) =>{
+    return moment(day, 'MMMM YYYY').subtract(index, 'months').format('MMMM YYYY')
+}
+
+export const addNextMonth = (day,index) =>{
+    return moment(day, 'MMMM Do YYYY dddd').add(index, 'months').format('MMMM YYYY')
+}
+
+

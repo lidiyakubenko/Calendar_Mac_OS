@@ -1,7 +1,7 @@
 import {configure, observable, action, runInAction, computed} from 'mobx'
 import moment from 'moment'
 import 'moment/locale/ru'
-import {addLastDay, addNextDay, getDateWithNumDayOfWeek} from './help-functions'
+import {addLastDay, addLastMonth, addNextDay, addNextMonth, getDateWithNumDayOfWeek} from './help-functions'
 
 configure({enforceActions: 'observed'})
 
@@ -59,12 +59,28 @@ class Calendar {
         return moment(day, 'MMMM Do YYYY dddd').format('MMMM YYYY')
     }
 
+    scrollToLastMonth = focusMonth => {
+        const lastMonth = addLastMonth(focusMonth,1)
+        const lastMonthHeight = this.monthsControl[lastMonth].height
+        const height = lastMonthHeight - this.headerHeight
+        window.scrollTo(0, height)
+    }
+
+
 
     scrollToCurrMonth = () => {
         const currMonthHeight = this.monthsControl[this.today.monthAndYear].height
         const height = currMonthHeight - this.headerHeight
         window.scrollTo(0, height)
     }
+
+    scrollToNextMonth = focusMonth => {
+        const nextMonth = addNextMonth(focusMonth,1)
+        const nextMonthHeight = this.monthsControl[nextMonth].height
+        const height = nextMonthHeight - this.headerHeight
+        window.scrollTo(0, height)
+    }
+
 
     isFocusAtMonth = day => {
         const month = this.getMonthAndYear(day)

@@ -41,7 +41,7 @@ class App extends Component {
         const {store} = this.props
         return (
             <Main>
-                <Head monthsControl={store.monthsControl}/>
+                <Head store={store}/>
                 <div onScroll={this.handleScroll} id='scroll'>
                     <Table>
                         <tbody ref={this.myRef}>

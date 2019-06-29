@@ -48,13 +48,15 @@ class Week extends Component {
             if (numDay === 1 && fromFirst > 0 && fromLast > 0) {
                 components = [...components,
                     (margin) =>
-                        <Holiday margin={margin} numDay={fromLast >= 6 ? weekLength - 1 : fromLast} key={holiday.name}>
+                        <Holiday margin={0} numDay={fromLast >= 6 ? weekLength - 1 : fromLast} key={holiday.name}>
                             <NameEmployee> {numDay === 7 ? this.cutName(holiday.name) : holiday.name}</NameEmployee>
                         </Holiday>]
             }
         }
-        return components.map((comp, i) => i === 0 ? comp(0) : comp(i + 3))
+        return components.map((comp, i) => comp(i + 3))
     }
+
+
 
     render() {
         const {week, today} = this.props
@@ -62,23 +64,23 @@ class Week extends Component {
         return (
             <tr>
                 {week.map(dayInfo => {
-                    const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('DD.MM.YYYY')
+                    const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('DD')
                     const isFocus = isFocusAtMonth(dayInfo)
                     const isToday = removeNumberDay(dayInfo) === today
-                    console.log(isToday)
+
                     return isWeekend(dayInfo) ?
                         <DayOffCell id={dayInfo} key={dayInfo}>
-                            {this.checkHolidays(dayInfo, day)}
+                            {this.checkHolidays(dayInfo)}
                             <NumberMonth day={day} isFocus={isFocus}/>
                         </DayOffCell> :
                         isToday ?
                             <Td id={dayInfo} key={dayInfo}>
-                                {this.checkHolidays(dayInfo, day)}
+                                {this.checkHolidays(dayInfo)}
                                 <TodayNumber number={day}>{day}</TodayNumber>
                             </Td>
                             :
                             <Td id={dayInfo} key={dayInfo}>
-                                {this.checkHolidays(dayInfo, day)}
+                                {this.checkHolidays(dayInfo)}
                                 <NumberMonth day={day} isFocus={isFocus}/>
                             </Td>
 

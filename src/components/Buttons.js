@@ -5,14 +5,14 @@ import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right'
 
 class Buttons extends Component {
     render() {
-        const {myRef,executeScroll} =this.props
+        const {focusMonth, scrollToCurrMonth, scrollToLastMonth, scrollToNextMonth} = this.props
         return (
             <div style={{display: 'flex'}}>
-                <ArrowButton>
+                <ArrowButton onClick={() => scrollToLastMonth(focusMonth)}>
                     <MdKeyboardArrowLeft/>
                 </ArrowButton>
-                <Button onClick={() => executeScroll(myRef)}>Сегодня</Button>
-                <ArrowButton>
+                <Button onClick={scrollToCurrMonth}>Сегодня</Button>
+                <ArrowButton onClick={() => scrollToNextMonth(focusMonth)}>
                     <MdKeyboardArrowRight/>
                 </ArrowButton>
             </div>
