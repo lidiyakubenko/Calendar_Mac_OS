@@ -1,4 +1,4 @@
-import styled,{ keyframes } from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
 
 export const CommonForButton = styled.button`
@@ -71,15 +71,14 @@ color:grey;
 
 export const Holiday = styled.div`
 background-color: rgb(193, 232, 255);
-position:absolute;
-right:${props =>{
-    return `-${700 - props.numDay * 100}px`}
-};
-left:-1px;
-font-size:.9em;
-z-index:5;
-padding-right:10px;
+position:relative;
+font-size: 0.85em;
+height:15px;
 font-family:sans-serif;
+z-index:5;
+margin:0 -1px 2px -1px;
+color:rgb(0,0,0);
+margin:${props => `0 -${props.numDay * 100 + 1}px 2px ${props.margin - 1}px`};
 `
 
 export const Th = styled.td`
@@ -118,7 +117,7 @@ const makeDisabled = keyframes`
   to {
      color:#DCDCDC;
   }
-`;
+`
 
 const makeEnabled = keyframes`
   from {
@@ -128,7 +127,7 @@ const makeEnabled = keyframes`
   to {
      color:black;
   }
-`;
+`
 
 
 export const Number = styled.div`
@@ -152,6 +151,13 @@ padding: ${props => props.number < 10 ? '2px 7px' : '3px 4px'};
 background-color:#FF4500;
 color:white;
 border-radius:90px
+`
+
+export const NameEmployee = styled.div`
+position: absolute;
+width: 200px;
+left: 15px;
+top: 0;
 `
 
 
