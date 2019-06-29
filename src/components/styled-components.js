@@ -1,6 +1,5 @@
 import styled, {keyframes} from 'styled-components'
 
-
 export const CommonForButton = styled.button`
 background-color:rgb(255,255,255);
 color: rgba(0,0,0,.8);
@@ -62,6 +61,39 @@ box-sizing:border-box;
 position:relative;
 font-size:.9em;
 `
+export const Tr = styled.tr`
+position:relative;
+`
+
+
+const makeVisible = keyframes`
+  from {
+    opacity:0;
+  }
+
+  to {
+      opacity:1;
+  }
+`
+
+const makeInvisible = keyframes`
+  from {
+    opacity:1;
+  }
+
+  to {
+      opacity:0;
+  }
+`
+
+export const TopMonth = styled.td`
+position:absolute;
+margin-left:10px;
+background-color:rgb(255,255,255);
+z-index:10;
+opacity: ${props => props.isScroll ? 1 : 0 };
+`
+
 
 export const DayOffCell = styled(Td)`
 background:#F5F5F5;

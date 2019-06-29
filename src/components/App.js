@@ -10,6 +10,10 @@ class App extends Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            isScroll: false,
+            indexScroll: null
+        }
         this.myRef = React.createRef()
         this.handleScroll = this.handleScroll.bind(this)
     }
@@ -28,11 +32,16 @@ class App extends Component {
     }
 
     handleScroll = () => {
+        // this.setState({isScroll: true})
+        // clearTimeout(this.state.indexScroll)
         this.props.store.addNewDays(this.myRef)
         this.props.store.changeFocusMonth()
+        // const index = setTimeout(() => this.setState({isScroll: false}), 100)
+        // this.setState({indexScroll: index})
     }
 
     render() {
+        const {isScroll} = this.state
         const {store} = this.props
         return (
             <Main>
@@ -46,6 +55,7 @@ class App extends Component {
                                     key={i}
                                     week={week}
                                     store={store}
+                                    isScroll={isScroll}
                                     today={store.today.full}
                                 />
                             ))

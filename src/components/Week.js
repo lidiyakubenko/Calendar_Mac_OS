@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {DayOffCell, Holiday, NameEmployee, Td} from './styled-components'
+import {DayOffCell, Holiday, NameEmployee, Td, TopMonth, Tr} from './styled-components'
 import {observer} from 'mobx-react'
 import Day from './Day'
 import moment from 'moment'
 import holidays from '../store/holidays'
+import CurrentDate from './CurrentDate'
 
 @observer
 class Week extends Component {
@@ -58,10 +59,20 @@ class Week extends Component {
 
 
     render() {
-        const {week, today} = this.props
-        const {isFocusAtMonth, removeNumberDay, isWeekend} = this.props.store
+        const {week, today, isScroll} = this.props
+        const {isFocusAtMonth, removeNumberDay, isWeekend, isFirstDayMonth, getMonthAndYear, monthsControl} = this.props.store
+        const monthAndYear = week.reduce((accum, day) => {
+                const date = removeNumberDay(day)
+                return accum ? accum : isFirstDayMonth(date) ? getMonthAndYear(date) : false
+            }, false
+        )
         return (
-            <tr>
+            <Tr>
+                {monthAndYear ?
+                    <TopMonth isScroll={isScroll}>
+                        <CurrentDate date={monthAndYear}/>
+                    </TopMonth> : <TopMonth isScroll={false}/>
+                }
                 {week.map(dayInfo => {
                     const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('D')
                     const isFocus = isFocusAtMonth(dayInfo)
@@ -85,7 +96,7 @@ class Week extends Component {
                             />
                         </Td>
                 })}
-            </tr>
+            </Tr>
         )
     }
 }

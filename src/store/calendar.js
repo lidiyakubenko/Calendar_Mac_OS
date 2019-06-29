@@ -1,4 +1,4 @@
-import {configure, observable, action, runInAction, computed} from 'mobx'
+import {action, configure, observable, runInAction} from 'mobx'
 import moment from 'moment'
 import 'moment/locale/ru'
 import {addLastDay, addLastMonth, addNextDay, addNextMonth, getDateWithNumDayOfWeek} from './help-functions'
@@ -51,8 +51,7 @@ class Calendar {
     }
 
     isFirstDayMonth = day => {
-        const currMonth = moment(day, 'MMMM Do YYYY dddd').format('MMMM')
-        return day.includes(`${currMonth} 1-`)
+        return day.includes(` 1-го`)
     }
 
     getMonthAndYear = day => {
