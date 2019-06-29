@@ -35,7 +35,6 @@ margin: auto;
 width: 700px;
 padding-top:65px;
 border-collapse: collapse;
-box-shadow:0 0 1px rgba(0,0,0,.4);
 `
 
 export const Header = styled.div`
@@ -145,8 +144,8 @@ export const NotCurrNumber = styled(Number)`
 export const TodayNumber = styled.div`
 position:absolute;
 font-family:sans-serif;
-top:${props => props.number < 10 ? '3px' : '2px'};
-right:${props => props.number < 10 ? '2px' : '2px'};
+top:3px;
+right:3px;
 padding: ${props => props.number < 10 ? '2px 7px' : '3px 4px'};
 background-color:#FF4500;
 color:white;

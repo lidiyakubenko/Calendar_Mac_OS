@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {DayOffCell, Holiday, NameEmployee, Td, TodayNumber} from './styled-components'
+import {DayOffCell, Holiday, NameEmployee, Td} from './styled-components'
 import {observer} from 'mobx-react'
-import NumberMonth from './NumberMonth'
+import Day from './Day'
 import moment from 'moment'
 import holidays from '../store/holidays'
 
@@ -57,33 +57,33 @@ class Week extends Component {
     }
 
 
-
     render() {
         const {week, today} = this.props
         const {isFocusAtMonth, removeNumberDay, isWeekend} = this.props.store
         return (
             <tr>
                 {week.map(dayInfo => {
-                    const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('DD')
+                    const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('D')
                     const isFocus = isFocusAtMonth(dayInfo)
                     const isToday = removeNumberDay(dayInfo) === today
 
                     return isWeekend(dayInfo) ?
                         <DayOffCell id={dayInfo} key={dayInfo}>
-                            {this.checkHolidays(dayInfo)}
-                            <NumberMonth day={day} isFocus={isFocus}/>
+                            <Day day={day}
+                                 dayInfo={dayInfo}
+                                 isToday={isToday}
+                                 isFocus={isFocus}
+                                 checkHolidays={this.checkHolidays}
+                            />
                         </DayOffCell> :
-                        isToday ?
-                            <Td id={dayInfo} key={dayInfo}>
-                                {this.checkHolidays(dayInfo)}
-                                <TodayNumber number={day}>{day}</TodayNumber>
-                            </Td>
-                            :
-                            <Td id={dayInfo} key={dayInfo}>
-                                {this.checkHolidays(dayInfo)}
-                                <NumberMonth day={day} isFocus={isFocus}/>
-                            </Td>
-
+                        <Td id={dayInfo} key={dayInfo}>
+                            <Day day={day}
+                                 dayInfo={dayInfo}
+                                 isToday={isToday}
+                                 isFocus={isFocus}
+                                 checkHolidays={this.checkHolidays}
+                            />
+                        </Td>
                 })}
             </tr>
         )

@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {Main, Table} from './styled-components'
-import {observer, inject} from 'mobx-react'
+import {inject, observer} from 'mobx-react'
 import Week from './Week'
 import Head from './Head'
-import _ from 'lodash'
 
 @inject('store')
 @observer
@@ -21,7 +20,6 @@ class App extends Component {
 
     componentDidMount() {
         this.props.store.addMonthsControl(this.myRef)
-        this.props.store.scrollToCurrMonth()
         window.addEventListener('scroll', this.handleScroll)
     }
 
@@ -30,9 +28,6 @@ class App extends Component {
     }
 
     handleScroll = () => {
-        //add new days
-        //add months control
-        // change focus month
         this.props.store.addNewDays(this.myRef)
         this.props.store.changeFocusMonth()
     }
