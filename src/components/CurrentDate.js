@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Month, Year} from './styled-components'
+import {Month, TopDateFixed, Year} from './styled-components'
 import {observer} from 'mobx-react'
 import moment from 'moment/moment'
 
@@ -18,11 +18,11 @@ class CurrentDate extends Component {
     render() {
         const {date} = this.props
         return (
-            <div style={{display: 'flex', alignItems: 'flex-end'}}>
+            <TopDateFixed>
                 <Month>{this.getOnlyMonth(date)} </Month>
                 <Year> {this.getOnlyYear(date)}</Year>
                 <Month>г.</Month>
-            </div>
+            </TopDateFixed>
         )
     }
 }

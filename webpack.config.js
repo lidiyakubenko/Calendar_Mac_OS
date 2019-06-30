@@ -5,6 +5,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 config = {
     output: {
@@ -35,7 +36,8 @@ config = {
         new webpack.ContextReplacementPlugin(
             /moment[/\\]locale$/,
             /ru/
-        )
+        ),
+        new LodashModuleReplacementPlugin,
     ]
 }
 

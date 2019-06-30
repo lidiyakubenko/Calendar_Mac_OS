@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-import {DayOffCell, Holiday, NameEmployee, Td, TopMonth, Tr} from './styled-components'
+import {DayOffCell, Vacation, NameEmployee, Td, TopDate, Tr} from './styled-components'
 import {observer} from 'mobx-react'
 import Day from './Day'
 import moment from 'moment'
-import holidays from '../store/holidays'
+import vacation from '../store/vacation'
 import CurrentDate from './CurrentDate'
+import {getMonthAndYear, getNumberDayOfWeek, isFirstDayMonth, isWeekend, removeNumberDay} from '../store/help-functions'
 
 @observer
 class Week extends Component {
@@ -21,37 +22,36 @@ class Week extends Component {
         return moment(date, 'MMMM Do YYYY dddd').format('DD.MM.YYYY')
     }
 
-    checkHolidays = dayInfo => {
-        const {getNumberDayOfWeek, removeNumberDay} = this.props.store
+    checkVacation = dayInfo => {
         const day = this.getFormatDate(removeNumberDay(dayInfo))
         let numDay = getNumberDayOfWeek(removeNumberDay(dayInfo))
         const weekLength = 7
         let components = []
         numDay = numDay === 0 ? 7 : numDay
 
-        for (let i = 0; i < holidays.length; ++i) {
-            const holiday = holidays[i]
+        for (let i = 0; i < vacation.length; ++i) {
+            const holiday = vacation[i]
             let fromFirst = this.diffDates(day, holiday.startDate)
             let fromLast = this.diffDates(holiday.endDate, day)
-            let lengthHolidays = this.diffDates(holiday.endDate, holiday.startDate)
+            let lengthVacation = this.diffDates(holiday.endDate, holiday.startDate)
 
             if (fromFirst === 0) {
                 components = [...components,
                     (margin) =>
-                        <Holiday margin={margin}
-                                 numDay={lengthHolidays < weekLength ? lengthHolidays : weekLength - numDay}
+                        <Vacation margin={margin}
+                                 numDay={lengthVacation < weekLength ? lengthVacation : weekLength - numDay}
                                  key={holiday.name}>
                             <NameEmployee> {numDay === 7 ? this.cutName(holiday.name) : holiday.name}</NameEmployee>
-                        </Holiday>
+                        </Vacation>
                 ]
 
             }
             if (numDay === 1 && fromFirst > 0 && fromLast > 0) {
                 components = [...components,
-                    (margin) =>
-                        <Holiday margin={0} numDay={fromLast >= 6 ? weekLength - 1 : fromLast} key={holiday.name}>
+                    () =>
+                        <Vacation margin={0} numDay={fromLast >= 6 ? weekLength - 1 : fromLast} key={holiday.name}>
                             <NameEmployee> {numDay === 7 ? this.cutName(holiday.name) : holiday.name}</NameEmployee>
-                        </Holiday>]
+                        </Vacation>]
             }
         }
         return components.map((comp, i) => comp(i + 3))
@@ -59,8 +59,8 @@ class Week extends Component {
 
 
     render() {
-        const {week, today, isScroll} = this.props
-        const {isFocusAtMonth, removeNumberDay, isWeekend, isFirstDayMonth, getMonthAndYear, monthsControl} = this.props.store
+        const {week, today,isScrolling} = this.props
+        const {isFocusAtMonth} = this.props.store
         const monthAndYear = week.reduce((accum, day) => {
                 const date = removeNumberDay(day)
                 return accum ? accum : isFirstDayMonth(date) ? getMonthAndYear(date) : false
@@ -69,9 +69,9 @@ class Week extends Component {
         return (
             <Tr>
                 {monthAndYear ?
-                    <TopMonth isScroll={isScroll}>
+                    <TopDate isScrolling={isScrolling} isFocus={!isFocusAtMonth(monthAndYear)}>
                         <CurrentDate date={monthAndYear}/>
-                    </TopMonth> : <TopMonth isScroll={false}/>
+                    </TopDate> : <TopDate isScroll={false}/>
                 }
                 {week.map(dayInfo => {
                     const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('D')
@@ -84,7 +84,7 @@ class Week extends Component {
                                  dayInfo={dayInfo}
                                  isToday={isToday}
                                  isFocus={isFocus}
-                                 checkHolidays={this.checkHolidays}
+                                 checkVacation={this.checkVacation}
                             />
                         </DayOffCell> :
                         <Td id={dayInfo} key={dayInfo}>
@@ -92,7 +92,7 @@ class Week extends Component {
                                  dayInfo={dayInfo}
                                  isToday={isToday}
                                  isFocus={isFocus}
-                                 checkHolidays={this.checkHolidays}
+                                 checkVacation={this.checkVacation}
                             />
                         </Td>
                 })}

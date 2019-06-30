@@ -6,7 +6,7 @@ import {observer} from 'mobx-react'
 @observer
 class Day extends Component {
     render() {
-        const {day, dayInfo, isToday, isFocus, checkHolidays} = this.props
+        const {day, dayInfo, isToday, isFocus, checkVacation} = this.props
         return (
             <React.Fragment>
                 {isToday ? <TodayNumber number={day}>{day}</TodayNumber> :
@@ -14,7 +14,7 @@ class Day extends Component {
                         <Number>{day}</Number> :
                         <NotCurrNumber>{day}</NotCurrNumber>
                 }
-                {checkHolidays(dayInfo)}
+                {checkVacation(dayInfo)}
             </React.Fragment>
         )
     }

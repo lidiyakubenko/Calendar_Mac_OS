@@ -66,41 +66,26 @@ position:relative;
 `
 
 
-const makeVisible = keyframes`
-  from {
-    opacity:0;
-  }
-
-  to {
-      opacity:1;
-  }
-`
-
-const makeInvisible = keyframes`
-  from {
-    opacity:1;
-  }
-
-  to {
-      opacity:0;
-  }
-`
-
-export const TopMonth = styled.td`
+export const TopDate = styled.td`
 position:absolute;
 margin-left:10px;
 background-color:rgb(255,255,255);
-z-index:10;
-opacity: ${props => props.isScroll ? 1 : 0 };
+z-index:7;
+transition: .3s;
+opacity:${props => props.isFocus ? 1 : 0};
 `
 
+export const TopDateFixed = styled.div`
+display: flex; 
+align-items: flex-end;
+`
 
 export const DayOffCell = styled(Td)`
 background:#F5F5F5;
 color:grey;
 `
 
-export const Holiday = styled.div`
+export const Vacation = styled.div`
 background-color: rgb(193, 232, 255);
 position:relative;
 font-size: 0.85em;
@@ -166,11 +151,11 @@ position:absolute;
 top:5px;
 right:9px;
 font-family:sans-serif;
- animation: ${makeEnabled} 1s forwards;
+ animation:${makeEnabled} linear .5s forwards;
 `
 
 export const NotCurrNumber = styled(Number)`
- animation: ${makeDisabled} .5s forwards;
+  animation:${makeDisabled} linear .3s forwards;
 `
 
 export const TodayNumber = styled.div`

@@ -3,6 +3,7 @@ import {Main, Table} from './styled-components'
 import {inject, observer} from 'mobx-react'
 import Week from './Week'
 import Head from './Head'
+import _ from 'lodash'
 
 @inject('store')
 @observer
@@ -10,12 +11,8 @@ class App extends Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            isScroll: false,
-            indexScroll: null
-        }
         this.myRef = React.createRef()
-        this.handleScroll = this.handleScroll.bind(this)
+        this.debouncedHandleScroll = _.debounce(this.debouncedHandleScroll.bind(this),300)
     }
 
     componentWillMount() {
@@ -24,29 +21,23 @@ class App extends Component {
 
     componentDidMount() {
         this.props.store.addMonthsControl(this.myRef)
-        window.addEventListener('scroll', this.handleScroll)
+        window.addEventListener('scroll', this.debouncedHandleScroll)
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll)
+        window.removeEventListener('scroll', this.debouncedHandleScroll)
     }
 
-    handleScroll = () => {
-        // this.setState({isScroll: true})
-        // clearTimeout(this.state.indexScroll)
+    debouncedHandleScroll(){
         this.props.store.addNewDays(this.myRef)
         this.props.store.changeFocusMonth()
-        // const index = setTimeout(() => this.setState({isScroll: false}), 100)
-        // this.setState({indexScroll: index})
     }
 
     render() {
-        const {isScroll} = this.state
         const {store} = this.props
         return (
             <Main>
                 <Head store={store}/>
-                <div onScroll={this.handleScroll} id='scroll'>
                     <Table>
                         <tbody ref={this.myRef}>
                         {
@@ -55,14 +46,12 @@ class App extends Component {
                                     key={i}
                                     week={week}
                                     store={store}
-                                    isScroll={isScroll}
                                     today={store.today.full}
                                 />
                             ))
                         }
                         </tbody>
                     </Table>
-                </div>
             </Main>
         )
     }
