@@ -18,7 +18,7 @@ class Head extends Component {
                 <YearAndButtons>
                     {focusMonth ? <CurrentDate  date={focusMonth}/>
                             :
-                        <CurrentDate date='январь 2019'/>
+                        <CurrentDate date=''/>
                     }
                     <Buttons
                         focusMonth={focusMonth}

@@ -65,6 +65,15 @@ export const Tr = styled.tr`
 position:relative;
 `
 
+const makeInvisible = keyframes`
+  from {
+    opacity:0;
+  }
+  to {
+      opacity:0;
+  }
+`
+
 
 export const TopDate = styled.td`
 position:absolute;
@@ -72,6 +81,7 @@ margin-left:10px;
 background-color:rgb(255,255,255);
 z-index:7;
 transition: .3s;
+animation:${makeInvisible} 1s;
 opacity:${props => props.isFocus ? 1 : 0};
 `
 

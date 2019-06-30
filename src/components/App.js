@@ -12,7 +12,7 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.myRef = React.createRef()
-        this.debouncedHandleScroll = _.debounce(this.debouncedHandleScroll.bind(this),300)
+        this.debouncedHandleScroll = _.debounce(this.debouncedHandleScroll.bind(this), 300)
     }
 
     componentWillMount() {
@@ -21,6 +21,8 @@ class App extends Component {
 
     componentDidMount() {
         this.props.store.addMonthsControl(this.myRef)
+        const elem = document.getElementById(this.props.store.today.monthAndYear)
+        setTimeout(() => elem.scrollIntoView(), 0)
         window.addEventListener('scroll', this.debouncedHandleScroll)
     }
 
@@ -28,7 +30,7 @@ class App extends Component {
         window.removeEventListener('scroll', this.debouncedHandleScroll)
     }
 
-    debouncedHandleScroll(){
+    debouncedHandleScroll() {
         this.props.store.addNewDays(this.myRef)
         this.props.store.changeFocusMonth()
     }
@@ -38,20 +40,20 @@ class App extends Component {
         return (
             <Main>
                 <Head store={store}/>
-                    <Table>
-                        <tbody ref={this.myRef}>
-                        {
-                            store.weeks.map((week, i) => (
-                                <Week
-                                    key={i}
-                                    week={week}
-                                    store={store}
-                                    today={store.today.full}
-                                />
-                            ))
-                        }
-                        </tbody>
-                    </Table>
+                <Table>
+                    <tbody ref={this.myRef}>
+                    {
+                        store.weeks.map((week, i) => (
+                            <Week
+                                key={i}
+                                week={week}
+                                store={store}
+                                today={store.today.full}
+                            />
+                        ))
+                    }
+                    </tbody>
+                </Table>
             </Main>
         )
     }

@@ -18,11 +18,12 @@ class CurrentDate extends Component {
     render() {
         const {date} = this.props
         return (
+            date ?
             <TopDateFixed>
-                <Month>{this.getOnlyMonth(date)} </Month>
+                <Month>{ this.getOnlyMonth(date)} </Month>
                 <Year> {this.getOnlyYear(date)}</Year>
                 <Month>г.</Month>
-            </TopDateFixed>
+            </TopDateFixed> : <TopDateFixed>{}</TopDateFixed>
         )
     }
 }

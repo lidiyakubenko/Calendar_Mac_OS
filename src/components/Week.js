@@ -39,8 +39,8 @@ class Week extends Component {
                 components = [...components,
                     (margin) =>
                         <Vacation margin={margin}
-                                 numDay={lengthVacation < weekLength ? lengthVacation : weekLength - numDay}
-                                 key={holiday.name}>
+                                  numDay={lengthVacation < weekLength ? lengthVacation : weekLength - numDay}
+                                  key={holiday.name}>
                             <NameEmployee> {numDay === 7 ? this.cutName(holiday.name) : holiday.name}</NameEmployee>
                         </Vacation>
                 ]
@@ -59,7 +59,7 @@ class Week extends Component {
 
 
     render() {
-        const {week, today,isScrolling} = this.props
+        const {week, today} = this.props
         const {isFocusAtMonth} = this.props.store
         const monthAndYear = week.reduce((accum, day) => {
                 const date = removeNumberDay(day)
@@ -69,7 +69,13 @@ class Week extends Component {
         return (
             <Tr>
                 {monthAndYear ?
-                    <TopDate isScrolling={isScrolling} isFocus={!isFocusAtMonth(monthAndYear)}>
+                    <TopDate isFocus={!isFocusAtMonth(monthAndYear)}>
+                        <a id={monthAndYear} style={{
+                            display: 'block',
+                            position: 'relative',
+                            top: '-73px',
+                            visibility: 'hidden'
+                        }}/>
                         <CurrentDate date={monthAndYear}/>
                     </TopDate> : <TopDate isScroll={false}/>
                 }

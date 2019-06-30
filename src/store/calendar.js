@@ -110,14 +110,14 @@ class Calendar {
 
     addFirstDays = () => {
         const currYear = +this.today.year
-        const firstDayOfTheYear = moment(`${currYear - 1}-01-01`).format('MMMM Do YYYY dddd')
+        const firstDayOfTheYear = moment(`${currYear}-01-01`).format('MMMM Do YYYY dddd')
         let dayOfWeek = getNumberDayOfWeek(firstDayOfTheYear)
         if (dayOfWeek !== 0) {
             const lastDay = addLastDay(firstDayOfTheYear, dayOfWeek)
-            this.addNextDays(lastDay, 1113)
+            this.addNextDays(lastDay, 371)
         }
         else {
-            this.addNextDays(firstDayOfTheYear, 1113)
+            this.addNextDays(firstDayOfTheYear, 371)
         }
     }
 
@@ -155,7 +155,7 @@ class Calendar {
             const bottom = currMonth.height
             const top = lastMonth ? lastMonth.height : 0
             runInAction(() => {
-                this.monthsControl[month].isFocus = docHeight >= top && docHeight <= bottom
+                this.monthsControl[month].isFocus = docHeight > top && docHeight < bottom
             })
         })
     }
