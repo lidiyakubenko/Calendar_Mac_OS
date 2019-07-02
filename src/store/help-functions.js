@@ -41,5 +41,15 @@ export const isWeekend = day => {
 
 export const getNumberDayOfWeek = day => moment(day, 'MMMM Do YYYY dddd').day()
 
+export const getWeek = index=>{
+    const firstDayOfWeek = moment('04.01.1960', 'DD.MM.YYYY').add(index, 'weeks').format('MMMM Do YYYY dddd')
+    let week = [getDateWithNumDayOfWeek(firstDayOfWeek)]
+    for (let i = 1; i < 7; ++i) {
+        const day = getDateWithNumDayOfWeek(addNextDay(firstDayOfWeek, i))
+        week = [...week, day]
+    }
+    return week
+}
+
 
 

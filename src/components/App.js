@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {Main, Table} from './styled-components'
 import {inject, observer} from 'mobx-react'
 import Week from './Week'
 import Head from './Head'
-import _ from 'lodash'
+import {List, WindowScroller} from 'react-virtualized'
+import moment from 'moment/moment'
+import {getWeek} from '../store/help-functions'
 
 @inject('store')
 @observer
@@ -11,50 +12,42 @@ class App extends Component {
 
     constructor(props) {
         super(props)
-        this.myRef = React.createRef()
-        this.debouncedHandleScroll = _.debounce(this.debouncedHandleScroll.bind(this), 300)
+        this.firstDate = '04.01.1960'
+        this.lastDate = '01.01.2050'
     }
 
-    componentWillMount() {
-        this.props.store.addFirstDays()
-    }
-
-    componentDidMount() {
-        this.props.store.addMonthsControl(this.myRef)
-        const elem = document.getElementById(this.props.store.today.monthAndYear)
-        setTimeout(() => elem.scrollIntoView(), 0)
-        window.addEventListener('scroll', this.debouncedHandleScroll)
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.debouncedHandleScroll)
-    }
-
-    debouncedHandleScroll() {
-        this.props.store.addNewDays(this.myRef)
-        this.props.store.changeFocusMonth()
+    renderRow = ({index, key, style, isScrolling}) => {
+        const week = getWeek(index)
+        return (
+            <div key={key} style={style}>
+                <Week week={week} isScrolling={isScrolling} store={this.props.store}/>
+            </div>
+        )
     }
 
     render() {
-        const {store} = this.props
+        const {today} = this.props.store
+        const weeks = moment(this.lastDate, 'DD.MM.YYYY').diff(moment(this.firstDate, 'DD.MM.YYYY'), 'weeks')
+        const indexCurrWeek = moment(today.formatDote, 'DD.MM.YYYY').diff(moment(this.firstDate, 'DD.MM.YYYY'), 'weeks')
         return (
-            <Main>
-                <Head store={store}/>
-                <Table>
-                    <tbody ref={this.myRef}>
-                    {
-                        store.weeks.map((week, i) => (
-                            <Week
-                                key={i}
-                                week={week}
-                                store={store}
-                                today={store.today.full}
-                            />
-                        ))
+            <div style={{height: 550, marginLeft: '20%', marginTop: 73}}>
+                <Head store={this.props.store}/>
+                <WindowScroller>
+                    {({height, isScrolling, onChildScroll, scrollTop}) => {
+                        return <List
+                            scrollToIndex={indexCurrWeek + 4}
+                            isScrolling={isScrolling}
+                            height={height}
+                            width={700}
+                            scrollTop={scrollTop}
+                            rowHeight={90}
+                            rowRenderer={this.renderRow}
+                            rowCount={weeks}
+                        />
                     }
-                    </tbody>
-                </Table>
-            </Main>
+                    }
+                </WindowScroller>
+            </div>
         )
     }
 }

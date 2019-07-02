@@ -59,8 +59,8 @@ class Week extends Component {
 
 
     render() {
-        const {week, today} = this.props
-        const {isFocusAtMonth} = this.props.store
+        const {week,isScrolling} = this.props
+        const {isFocusAtMonth,today} = this.props.store
         const monthAndYear = week.reduce((accum, day) => {
                 const date = removeNumberDay(day)
                 return accum ? accum : isFirstDayMonth(date) ? getMonthAndYear(date) : false
@@ -69,27 +69,21 @@ class Week extends Component {
         return (
             <Tr>
                 {monthAndYear ?
-                    <TopDate isFocus={!isFocusAtMonth(monthAndYear)}>
-                        <a id={monthAndYear} style={{
-                            display: 'block',
-                            position: 'relative',
-                            top: '-73px',
-                            visibility: 'hidden'
-                        }}/>
+                    <TopDate isScrolling={isScrolling}>
                         <CurrentDate date={monthAndYear}/>
-                    </TopDate> : <TopDate isScroll={false}/>
+                    </TopDate> : <TopDate isScrolling={false}/>
                 }
                 {week.map(dayInfo => {
                     const day = moment(removeNumberDay(dayInfo), 'MMMM Do YYYY dddd').format('D')
-                    const isFocus = isFocusAtMonth(dayInfo)
-                    const isToday = removeNumberDay(dayInfo) === today
+                    // const isFocus = isFocusAtMonth(dayInfo)
+                    const isToday = removeNumberDay(dayInfo) === today.full
 
                     return isWeekend(dayInfo) ?
                         <DayOffCell id={dayInfo} key={dayInfo}>
                             <Day day={day}
                                  dayInfo={dayInfo}
                                  isToday={isToday}
-                                 isFocus={isFocus}
+                                 isFocus={true}
                                  checkVacation={this.checkVacation}
                             />
                         </DayOffCell> :
@@ -97,7 +91,7 @@ class Week extends Component {
                             <Day day={day}
                                  dayInfo={dayInfo}
                                  isToday={isToday}
-                                 isFocus={isFocus}
+                                 isFocus={true}
                                  checkVacation={this.checkVacation}
                             />
                         </Td>

@@ -7,8 +7,9 @@ import {
     addNextDay,
     addNextMonth,
     getDateWithNumDayOfWeek, getMonthAndYear,
-    isFirstDayMonth, removeNumberDay,getNumberDayOfWeek
+    isFirstDayMonth, removeNumberDay, getNumberDayOfWeek
 } from './help-functions'
+import {Number} from '../components/styled-components'
 
 configure({enforceActions: 'observed'})
 
@@ -17,6 +18,7 @@ class Calendar {
     @observable weeks = []
     @observable today = {
         full: moment().format('MMMM Do YYYY dddd'),
+        formatDote: moment().format('DD.MM.YYYY'),
         monthAndYear: moment().format('MMMM YYYY'),
         year: moment().format('YYYY'),
     }
@@ -73,8 +75,6 @@ class Calendar {
 
     @action
     addLastDays = (day, daysCount) => {
-        const rowHeight = 90
-        const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
         let days = []
         for (let i = 1; i <= daysCount; ++i) {
             const lastDay = addLastDay(day, i)
@@ -84,7 +84,6 @@ class Calendar {
         runInAction(() => {
             this.weeks = [...lastWeeks, ...this.weeks]
         })
-        window.scrollTo(0, docHeight + rowHeight * lastWeeks.length - 1)
     }
 
     @action
@@ -123,18 +122,20 @@ class Calendar {
 
 
     @action
-    addMonthsControl = refTable => {
-        const rows = [...refTable.current.children]
-        rows.forEach(row => [...row.children].forEach(cell => {
+    addMonthsControl = (refTable,scrollTop) => {
+        runInAction(() => {
+            this.monthsControl = {}
+        })
+        const rows = [...refTable.current.childNodes[0].childNodes[0].childNodes]
+        rows.forEach(row => [...row.childNodes[0].childNodes].forEach(cell => {
             const isFirstDay = isFirstDayMonth(removeNumberDay(cell.id))
-            const month = this.monthsControl[(getMonthAndYear(cell.id))]
-            if (isFirstDay) {
+            if (isFirstDay && cell.id) {
                 runInAction(() => {
                     this.monthsControl = {
                         ...this.monthsControl,
                         [getMonthAndYear(cell.id)]: {
                             height: cell.offsetTop,
-                            isFocus: month ? month.isFocus : false
+                            isFocus: scrollTop > row.offsetTop && row.offsetTop + 300 < scrollTop
                         }
                     }
                 })
@@ -162,17 +163,17 @@ class Calendar {
 
 
     addNewDays = ref => {
-        const docHeight = Number(document.documentElement.scrollTop.toFixed(0))
-        const docBottom = Number(document.documentElement.offsetHeight.toFixed(0))
+        const docHeight = ref.current.id
+        const docBottom = ref.current.offsetHeight
         const lastWeek = this.weeks.length - 1
         const lastDay = this.weeks[lastWeek].length - 1
-        if (docHeight <= 300) {
+        if (docHeight <= 1000) {
             this.addLastDays(removeNumberDay(this.weeks[0][0]), 735)
-            this.addMonthsControl(ref)
+            // this.addMonthsControl(ref)
         }
         if (docHeight >= docBottom - 1000) {
             this.addNextDays(removeNumberDay(this.weeks[lastWeek][lastDay]), 735)
-            this.addMonthsControl(ref)
+            // this.addMonthsControl(ref)
         }
     }
 

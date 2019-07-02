@@ -9,16 +9,16 @@ import {observer} from 'mobx-react'
 @observer
 class Head extends Component {
     render() {
-        const {monthsControl,scrollToCurrMonth,scrollToNextMonth,scrollToLastMonth} = this.props.store
+        const {monthsControl, scrollToCurrMonth, scrollToNextMonth, scrollToLastMonth} = this.props.store
         const months = Object.keys(monthsControl)
-        const focusMonth = months.reduce((accum,month)=>
-           accum ? accum : monthsControl[month].isFocus ? month : false ,false)
+        const focusMonth = months.reduce((accum, month) =>
+            accum ? accum : monthsControl[month].isFocus ? month : false, false)
         return (
             <Header>
                 <YearAndButtons>
-                    {focusMonth ? <CurrentDate  date={focusMonth}/>
-                            :
-                        <CurrentDate date=''/>
+                    {focusMonth ? <CurrentDate date={focusMonth}/>
+                        :
+                        <CurrentDate date='июнь 2019'/>
                     }
                     <Buttons
                         focusMonth={focusMonth}
@@ -27,9 +27,9 @@ class Head extends Component {
                         scrollToCurrMonth={scrollToCurrMonth}
                     />
                 </YearAndButtons>
-                <table>
-                    <DaysOfTheWeek/>
-                </table>
+
+                <DaysOfTheWeek/>
+
             </Header>
         )
     }

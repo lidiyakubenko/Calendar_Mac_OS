@@ -4,8 +4,7 @@ import {DayOfTheWeek, Th} from './styled-components'
 class DaysOfTheWeek extends Component {
     render() {
         return (
-            <tbody>
-            <tr>
+         <div style={{display:'flex'}}>
                 <Th>
                     <DayOfTheWeek>пн</DayOfTheWeek>
                 </Th>
@@ -27,8 +26,7 @@ class DaysOfTheWeek extends Component {
                 <Th style={{color: 'grey'}}>
                     <DayOfTheWeek>вс</DayOfTheWeek>
                 </Th>
-            </tr>
-            </tbody>
+         </div>
         )
     }
 }

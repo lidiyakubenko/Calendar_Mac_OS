@@ -14,7 +14,7 @@ class Day extends Component {
                         <Number>{day}</Number> :
                         <NotCurrNumber>{day}</NotCurrNumber>
                 }
-                {checkVacation(dayInfo)}
+                {/*{checkVacation(dayInfo)}*/}
             </React.Fragment>
         )
     }

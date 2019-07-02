@@ -38,9 +38,9 @@ border-collapse: collapse;
 
 export const Header = styled.div`
 position:fixed;
+top:0;
 background-color:rgb(255,255,255);
 border: .5px solid rgba(0,0,0,.2);
-top:0;
 width:700px;
 z-index:10;
 `
@@ -53,16 +53,17 @@ padding:5px 10px;
 `
 
 
-export const Td = styled.td`
-border: 1px solid  #DCDCDC;
+export const Td = styled.div`
+border: .5px solid  #DCDCDC;
 width:100px;
 height:90px;
 box-sizing:border-box;
 position:relative;
 font-size:.9em;
 `
-export const Tr = styled.tr`
+export const Tr = styled.div`
 position:relative;
+display:flex;
 `
 
 const makeInvisible = keyframes`
@@ -75,14 +76,13 @@ const makeInvisible = keyframes`
 `
 
 
-export const TopDate = styled.td`
+export const TopDate = styled.div`
 position:absolute;
 margin-left:10px;
 background-color:rgb(255,255,255);
 z-index:7;
-transition: .3s;
-animation:${makeInvisible} 1s;
-opacity:${props => props.isFocus ? 1 : 0};
+transition: .5s;
+opacity:${props => props.isScrolling ? 1 : 0};
 `
 
 export const TopDateFixed = styled.div`
@@ -107,7 +107,7 @@ color:rgb(0,0,0);
 margin:${props => `0 -${props.numDay * 100 + 1}px 2px ${props.margin - 1}px`};
 `
 
-export const Th = styled.td`
+export const Th = styled.div`
 position:relative;
 padding:13px 49px;
 `
